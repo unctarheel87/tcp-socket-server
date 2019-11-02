@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>C Socket Server Page</title>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<style>
+    * {
+        font-family: Helvetica, Arial, sans-serif;
+    }
+    body {
+        text-align: center;
+        padding: 1em;
+    }
+    div, button {
+        margin-bottom: 0.5em;
+    }
+</style>
+<body>
+    <h1>Test App</h1>
+    <p>Send a message to the server:</p>
+    <div>
+        <textarea></textarea>
+    </div>
+    <button id="btn-1" class="mdc-button">Send</button>
+    <div>
+        <input type="file">
+    </div>
+    <button id="btn-2" class="mdc-button">Send</button>
+    <h2>Response:</h2>
+    <p id="response"></p>
+</body>
+<script>
+    (function() {
+        const response = document.getElementById("response"),
+              textarea = document.querySelector("textarea"),
+              input = document.querySelector("input"),
+              b1 = document.getElementById("btn-1"),
+              b2 = document.getElementById("btn-2");
+        
+        b1.addEventListener("click", async function() {
+            const res = await fetch("http://localhost:8080", {
+                method: 'POST',
+                mode: 'no-cors',
+                body: textarea.value
+            });
+            const text = await res.text();
+            response.innerHTML = text;
+        });
+        b2.addEventListener("click", async function() {
+            const res = await fetch("http://localhost:8080", {
+                method: 'POST',
+                mode: 'no-cors',
+                body: input.files[0]
+            });
+        });
+    })();
+</script>
+</html>
